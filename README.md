@@ -1,6 +1,6 @@
 This is a simple linus shell project done by Miracle Anderson.
 
-in c language. the code shows how to handle user prompt,tokinize 
+in c language. the code shows how to handle user prompt,tokenize 
 
 input,handle command line arguement, fork and execution command,
 
