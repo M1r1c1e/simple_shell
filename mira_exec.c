@@ -19,8 +19,14 @@ void parent_childfork(char *buffhouse, char *const mira_argv[])
 	pid_t child_ID;
 	int i;
 	int status;
-	char **mira_argv_copy;
-	char *full_path = get_path(buffhouse);
+	char **mira_argv_copy = NULL;
+	char *full_path = NULL;
+
+	if (mira_argv == NULL || mira_argv[0] == NULL)
+	{
+		write(STDERR_FILENO, "Command not provided\n", 21);
+		return;
+	}
 
 	if (strcmp(mira_argv[0], "exit") == 0)
 	{
@@ -45,7 +51,6 @@ void parent_childfork(char *buffhouse, char *const mira_argv[])
 		write(STDERR_FILENO, "Executable not found in PATH: ", 29);
 		write(STDERR_FILENO, buffhouse, strlen(buffhouse));
 		write(STDERR_FILENO, "\n", 1);
-		free(full_path);
 		return;
 	}
 

@@ -24,8 +24,6 @@ int main(void)
 			break;
 		}
 
-		proexit_fig(inputARG);
-
 		parent_childfork(inputARG[0], inputARG);
 
 		for (i = 0; inputARG[i] != NULL; i++)

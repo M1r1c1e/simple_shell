@@ -9,19 +9,19 @@
  * get_path - program function to get full command path.
  * @inputcom: The command to look for in the PATH.
  *
- * Return:  full path of the command if found, or NULL.
+ * Return: full path of the command if found, or NULL.
  */
 
 char *get_path(char *inputcom);
 char *get_path(char *inputcom)
 {
+	int inputcomLen;
 	int pathpro_toklen;
+	char *pathpro_cpy;
+	char *pathpro_tok;
 	char *pathpro_doc;
 	char *pathpro = getenv("PATH");
-	char *pathpro_cpy = strdup(pathpro);
-	int inputcomLen = strlen(inputcom);
 	struct stat pathbuf;
-	char *pathpro_tok = strtok(pathpro_cpy, ":");
 
 	if (strcmp(inputcom, "exit") == 0 || strcmp(inputcom, "env") == 0)
 	{
@@ -42,15 +42,24 @@ char *get_path(char *inputcom)
 		return (NULL);
 	}
 
+	pathpro_tok = strtok(pathpro_cpy, ":");
+
 	while (pathpro_tok != NULL)
 	{
+		inputcomLen = strlen(inputcom);
 		pathpro_toklen = strlen(pathpro_tok);
 		pathpro_doc = malloc(inputcomLen + pathpro_toklen + 2);
+
+		if (pathpro_doc == NULL)
+		{
+			perror("Memory allocation failed\n");
+			free(pathpro_cpy);
+			return (NULL);
+		}
 
 		strcpy(pathpro_doc, pathpro_tok);
 		strcat(pathpro_doc, "/");
 		strcat(pathpro_doc, inputcom);
-		strcat(pathpro_doc, "\0");
 
 		if (stat(pathpro_doc, &pathbuf) == 0)
 		{
@@ -68,7 +77,7 @@ char *get_path(char *inputcom)
 
 	if (stat(inputcom, &pathbuf) == 0)
 	{
-		return (inputcom);
+		return (strdup(inputcom));
 	}
 
 	return (NULL);
